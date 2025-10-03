@@ -1,0 +1,6 @@
+@TaskSchedulerQuartz_HostAddress = http://localhost:5278
+
+GET {{TaskSchedulerQuartz_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
