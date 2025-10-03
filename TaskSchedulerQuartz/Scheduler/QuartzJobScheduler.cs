@@ -30,6 +30,15 @@ namespace TaskSchedulerQuartz.Scheduler
                 .ForJob(backupJobKey)
                 .WithIdentity("BackupJob-trigger")
                 .WithCronSchedule("0 9 15 * * ?"));
+
+            // One-time Special Job (Oct 10, 2025 at 3:00 PM)
+            var specialJobKey = new JobKey("SpecialJob");
+            q.AddJob<SpecialJob>(opts => opts.WithIdentity(specialJobKey));
+            q.AddTrigger(opts => opts
+                .ForJob(specialJobKey)
+                .WithIdentity("SpecialJob-trigger")
+                .StartAt(new DateTimeOffset(new DateTime(2025, 10, 03, 15, 15, 0)))
+                .WithSimpleSchedule(x => x.WithRepeatCount(0)));
         }
     }
 }
