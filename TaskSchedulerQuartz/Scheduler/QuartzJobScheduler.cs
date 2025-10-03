@@ -55,7 +55,7 @@ namespace TaskSchedulerQuartz.Scheduler
             var specialJobKeyTimezoneSpecific = new JobKey("SpecialJob");
             q.AddJob<SpecialJob>(opts => opts.WithIdentity(specialJobKeyTimezoneSpecific));
             q.AddTrigger(opts => opts
-                .ForJob(specialJobKeyTimezoneSpecific) // ✅ use the same key
+                .ForJob(specialJobKeyTimezoneSpecific)
                 .WithIdentity("SpecialJob-trigger")
                 .StartAt(new DateTimeOffset(targetTime)) // UTC time
                 .WithSimpleSchedule(x => x.WithRepeatCount(0)));
