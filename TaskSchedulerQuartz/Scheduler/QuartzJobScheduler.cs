@@ -1,5 +1,5 @@
 ﻿using Quartz;
-using TaskSchedulerQuartz.Services.JobServices;
+using TaskSchedulerQuartz.Jobs;
 
 namespace TaskSchedulerQuartz.Scheduler
 {
@@ -68,6 +68,32 @@ namespace TaskSchedulerQuartz.Scheduler
                 .ForJob(lastDayJobKey)
                 .WithIdentity("LastDayOfMonthJob-trigger")
                 .WithCronSchedule("0 0 15 L * ?"));
+
+            //Inteeval Job (Every 10 secounds)
+            var intervalJobKey = new JobKey("IntervalJob");
+
+            q.AddJob<IntervalJob>(opts => opts.WithIdentity(intervalJobKey));
+            q.AddTrigger(opts => opts
+                .ForJob(intervalJobKey)
+                .WithIdentity("IntervalJob-trigger")
+                .WithSimpleSchedule(x => x
+                    .WithInterval(TimeSpan.FromSeconds(10)) // repeat every 10 seconds
+                    .RepeatForever()));                     // repeat indefinitely
+
+
+            //Interval Job for specific time zone (Every 10 secounds)
+            var intervalJobKey2 = new JobKey("IntervalJobIST");
+            q.AddJob<IntervalJob>(opts => opts.WithIdentity(intervalJobKey2));
+
+            q.AddTrigger(opts => opts
+                .ForJob(intervalJobKey2)
+                .WithIdentity("IntervalJobIST-trigger")
+                .WithSimpleSchedule(x => x
+                    .WithInterval(TimeSpan.FromSeconds(10))
+                    .RepeatForever())
+                .StartAt(TimeZoneInfo.ConvertTimeToUtc(
+                    DateTime.Now.AddSeconds(5),
+                    TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"))));
 
         }
     }

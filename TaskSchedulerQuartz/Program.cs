@@ -1,6 +1,5 @@
 using Quartz;
 using TaskSchedulerQuartz.Scheduler;
-using TaskSchedulerQuartz.Services.JobServices;
 
 namespace TaskSchedulerQuartz
 {

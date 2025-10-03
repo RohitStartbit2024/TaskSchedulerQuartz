@@ -1,6 +1,6 @@
 ﻿using Quartz;
 
-namespace TaskSchedulerQuartz.Services.JobServices
+namespace TaskSchedulerQuartz.Jobs
 {
     public class SpecialJob : IJob
     {
