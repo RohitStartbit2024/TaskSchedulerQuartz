@@ -55,30 +55,69 @@ Each job’s logic runs inside the `Execute()` method.
 Triggers define **when** a job runs.  
 They can use **cron expressions** or **simple intervals**.
 
-A **cron expression** has the following format:
-
+🕒 Full Quartz Cron Expression Structure:
+Quartz uses a 6 or 7-field cron format — the 7th field (year) is optional.
 ```
 ┌───────────── second (0–59)
 │ ┌─────────── minute (0–59)
 │ │ ┌───────── hour (0–23)
 │ │ │ ┌─────── day of month (1–31)
-│ │ │ │ ┌───── month (1–12)
-│ │ │ │ │ ┌─── day of week (0–6 or SUN–SAT)
-│ │ │ │ │ │
-│ │ │ │ │ │
-* * * * * ?
+│ │ │ │ ┌───── month (1–12 or JAN–DEC)
+│ │ │ │ │ ┌─── day of week (1–7 or SUN–SAT)
+│ │ │ │ │ │ ┌ year (optional)
+│ │ │ │ │ │ │
+│ │ │ │ │ │ │
+* * * * * ? *
 ```
 
 The **optional 7th field** represents the year.
 
-| Symbol | Meaning | Example |
-|---------|----------|----------|
-| `*` | Every value | Every minute/hour/day |
-| `?` | No specific value | Used when another field is specified |
-| `/` | Increment | `0/10` means every 10 seconds |
-| `L` | Last | `L` in day-of-month = last day of month |
-| `,` | List | `MON,WED,FRI` |
-| `-` | Range | `10-12` = between 10 and 12 |
+---
+
+## 🧩 Field Explanation
+
+| **Field** | **Allowed Values** | **Special Characters** | **Description** |
+|:--|:--|:--|:--|
+| **Seconds** | 0–59 | `, - * /` | Seconds to fire on |
+| **Minutes** | 0–59 | `, - * /` | Minutes to fire on |
+| **Hours** | 0–23 | `, - * /` | Hours to fire on |
+| **Day of Month** | 1–31 | `, - * ? / L W C` | Day of the month |
+| **Month** | 1–12 or JAN–DEC | `, - * /` | Month |
+| **Day of Week** | 1–7 or SUN–SAT | `, - * ? / L C #` | Day of the week |
+| **Year (optional)** | 1970–2099 | `, - * /` | Optional year field |
+
+---
+
+## 🔹 Common Special Characters
+
+| **Character** | **Meaning** | **Example** |
+|:--|:--|:--|
+| `*` | Any value (every unit) | `* * * * * ?` → every second |
+| `?` | No specific value (used to avoid conflict between day-of-month and day-of-week) | `0 0 12 ? * MON-FRI` → every weekday at noon |
+| `/` | Increment (every N units) | `0/10 * * * * ?` → every 10 seconds |
+| `,` | Multiple values | `0 0 10,14,16 * * ?` → 10 AM, 2 PM, 4 PM |
+| `-` | Range | `0 15 10-12 * * ?` → every 15th minute during 10–12 AM |
+| `L` | Last day (of month or week) | `0 0 15 L * ?` → 3 PM on last day of month |
+| `W` | Nearest weekday | `0 0 9 15W * ?` → 9 AM on the nearest weekday to 15th of month |
+| `#` | Nth weekday of the month | `0 0 9 ? * 5#3` → 9 AM on the 3rd Friday of every month |
+
+---
+
+## 💡 Examples
+
+| **Expression** | **Description** |
+|:--|:--|
+| `0 0 15 * * ?` | Every day at 3:00 PM |
+| `0 0 15 ? * FRI` | Every Friday at 3:00 PM |
+| `0 0 15 30 * ?` | Every 30th day of the month at 3:00 PM |
+| `0 0 15 L * ?` | On the last day of each month at 3:00 PM |
+| `0 0 15 ? * FRI 2025` | Every Friday at 3:00 PM in the year 2025 only |
+
+---
+
+✅ **Notes:**
+- You can include the **7th "Year" field** (optional) in Quartz cron expressions.
+- Use **`L`** to represent the **last day of the month** (or the last specific weekday).
 
 ---
 
