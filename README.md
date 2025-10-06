@@ -214,13 +214,3 @@ You’ll see console logs when each scheduled job executes.
 | Misfire Handling | ❌ No | ✅ Yes |
 
 **In short:** Quartz is a more robust, production-ready scheduler for enterprise apps.
-
----
-
-## 🧾 License
-This project is licensed under the MIT License.
-
----
-
-## 👨‍💻 Author
-**Rohit** — built to demonstrate robust task scheduling in .NET using Quartz.NET.
