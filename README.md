@@ -100,6 +100,7 @@ The **optional 7th field** represents the year.
 | `L` | Last day (of month or week) | `0 0 15 L * ?` → 3 PM on last day of month |
 | `W` | Nearest weekday | `0 0 9 15W * ?` → 9 AM on the nearest weekday to 15th of month |
 | `#` | Nth weekday of the month | `0 0 9 ? * 5#3` → 9 AM on the 3rd Friday of every month |
+| `C` | Calendar-based — used with `L` or alone to refer to the **nearest day/week to the calendar start** (depends on configuration) | `5C` → 5 days after the calendar’s start date; `1C` in day-of-week means first weekday of the calendar month |
 
 ---
 
